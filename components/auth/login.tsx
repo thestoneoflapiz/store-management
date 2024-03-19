@@ -184,11 +184,11 @@ export default function LoginPage(){
         alignItems="center"
       >
         <Grid item xs={12} textAlign="center">
-          <img src="/img/b_logo.png" className={styles.login_logo}/>
+          <img src="/img/logo.png" className={styles.login_logo}/>
         </Grid>
         <Grid item lg={5} md={6} sm={8} xs={12}>
           <Typography variant="h4" align="center">Welcome to Store Manager</Typography>
-          {isLoading && <LinearProgress />}
+          {isLoading && <LinearProgress color="inherit"/>}
           <Box
             onSubmit={handleSubmit}
             component="form"
@@ -224,6 +224,7 @@ export default function LoginPage(){
                 endIcon={<Login />}
                 style={{ marginTop: "10px" }}
                 disabled={isLoading}
+                color="inherit"
               >
                 Login
               </Button>

@@ -1,18 +1,32 @@
 "use client";
 
-import { Box, Button, Grid, LinearProgress, TextField, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { Alert, Box, Button, Grid, LinearProgress, Snackbar, TextField, Typography } from "@mui/material";
+import { FormEvent, useRef, useState } from "react";
 import styles from "@/app/page.module.css";
 import { Login } from "@mui/icons-material";
 import { signIn } from "next-auth/react";
+import type { AlertColor } from "@mui/material";
 
 interface Credentials {
   username: string;
   password: string;
 }
 
+interface Notifs {
+  open: boolean,
+  message: string,
+  severity: AlertColor
+}
+
 export default function LoginPage(){
   const noSpecialChars = /^[a-zA-Z0-9_]+$/;
+
+  const defaultNotif: Notifs = {
+    open: false,
+    severity: "success",
+    message: "",
+  };
+  const [notif, setNotif] = useState(defaultNotif);
 
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -33,15 +47,33 @@ export default function LoginPage(){
 
     if(response?.error){
       console.log("Error: ", response.error);
+      setTimeout(() => {
+        const newState: Notifs = {
+          open: true,
+          severity: "error",
+          message: response.error || "Something went wrong..."
+        };
+        setNotif(newState);
+        setIsLoading(false);
+      }, 1000);
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if(errors.username || errors.password){
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+      return;
+    }
+
     setIsLoading(true);
 
     const eUsername = usernameRef.current.value ?? null;
     const ePassword = passwordRef.current.value ?? null;
-
+    
     if(!eUsername && !ePassword){
       setErrors({
         username: "Required field...",
@@ -121,9 +153,30 @@ export default function LoginPage(){
       break;
     }
   }
-
+  
   return (
     <div className={styles.login_page}>
+      <Snackbar 
+        open={notif.open}
+        autoHideDuration={3500}
+        anchorOrigin={{ vertical:"top", horizontal:"center"}}
+        key={"top-center"}
+        onClose={()=>{
+          setNotif((prev)=>{
+            const newState = {...prev};
+            newState.open = false;
+            return newState;
+          });
+        }}
+      >
+        <Alert
+          variant="filled"
+          severity={notif.severity}
+          sx={{ width: '100%' }}
+        >
+          {notif.message || "??"}
+        </Alert>
+      </Snackbar>
       <Grid 
         container 
         spacing={2} 
@@ -137,6 +190,7 @@ export default function LoginPage(){
           <Typography variant="h4" align="center">Welcome to Store Manager</Typography>
           {isLoading && <LinearProgress />}
           <Box
+            onSubmit={handleSubmit}
             component="form"
             noValidate
             autoComplete="off"
@@ -166,7 +220,7 @@ export default function LoginPage(){
               />
               <Button
                 variant="contained"
-                onClick={handleSubmit}
+                type="submit"
                 endIcon={<Login />}
                 style={{ marginTop: "10px" }}
                 disabled={isLoading}

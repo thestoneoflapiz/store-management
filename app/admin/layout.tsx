@@ -1,5 +1,6 @@
 "use client";
 
+import AdminHeader from "@/components/admin/header";
 import { Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { ReactNode } from "react";
@@ -13,7 +14,7 @@ export default function Layout({ children, ...props }: Props){
   return(
     <>
       <main>
-        <Typography variant="h5">Status: {status}</Typography>
+        <AdminHeader />
         {children}
       </main>
     </>

@@ -54,25 +54,32 @@ export function UserRoles(){
 export const defaultPages = [
   {
     name: "Home",
-    link: "/ad", 
+    link: "/admin", 
   },{
     name: "Expenses",
-    link: "/ad/expenses", 
+    link: "/admin/expenses", 
   },
   {
     name: "Sales",
-    link: "/ad/sales", 
+    link: "/admin/sales", 
+  },
+];
+
+export const defaultSettings = [
+  {
+    name: "Profile",
+    link: "/admin/profile", 
   },
   {
     name: "Menu",
-    link: "/ad/menu", 
+    link: "/admin/menu", 
   },
   {
     name: "Users",
-    link: "/ad/users", 
+    link: "/admin/users", 
   },
   {
-    name: "Cash Out",
-    link: "/ad/cash_out", 
-  }
-];
+    name: "Cash Outs",
+    link: "/admin/cos", 
+  },
+]

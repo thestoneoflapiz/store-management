@@ -6,8 +6,22 @@
   margin: 5% auto auto auto;
 }
 
-.login_logo{
+.login_logo, .header_logo{
   height: 150px;
   width: auto;
   margin: auto;
+}
+
+.header_logo{
+  height: auto;
+  width: 200px;
+}
+
+.link{
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:hover{
+  font-weight: 900;
 }
